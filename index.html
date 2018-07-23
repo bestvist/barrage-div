@@ -3,8 +3,154 @@
 <head>
     <meta charset="UTF-8">
     <title>JS弹幕实现-div</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            outline: none;
+        }
+
+        p {
+            margin: .5em;
+            word-break: break-all;
+        }
+
+        .container {
+            position: relative;
+            width: 700px;
+            height: 600px;
+            margin: auto;
+            padding-right: 200px;
+        }
+
+        .content {
+            width: 100%;
+            height: 100%;
+            border: 1px solid #ccc;
+            background-image: url('http://ox2ualtw3.bkt.clouddn.com/dongman1.jpeg');
+            background-size: 100% 100%;
+        }
+
+        .content-opt {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 200px;
+            height: 100%;
+        }
+
+        .content-text {
+            height: calc(100% - 30px);
+            margin-bottom: 30px;
+            border: 1px solid #ccc;
+            overflow: auto;
+        }
+
+        .content-input {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 30px;
+            border: 1px solid #ccc;
+        }
+
+        .content-input input {
+            width: 70%;
+            padding: 2px;
+            border-radius: 5px;
+        }
+
+        .content-input button {
+            padding: 3px 10px;
+            border: none;
+            border-radius: 5px;
+            background: rgb(90, 154, 214);
+        }
+
+    </style>
 </head>
 <body>
 
+<div class="container">
+    <div id="content" class="content"></div>
+    <div class="content-opt">
+        <div id="content-text" class="content-text"></div>
+        <div class="content-input">
+            <input id="text" type="text">
+            <button id="send">发送</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    (function () {
+        class Barrage {
+            constructor(id) {
+                this.domList = [];
+                this.dom = document.querySelector('#' + id);
+                if (this.dom.style.position == '' || this.dom.style.position == 'static') {
+                    this.dom.style.position = 'relative';
+                }
+                this.dom.style.overflow = 'hidden';
+                let rect = this.dom.getBoundingClientRect();
+                this.domWidth = rect.right - rect.left;
+                this.domHeight = rect.bottom - rect.top;
+            }
+
+            shoot(text) {
+                let div = document.createElement('div');
+                div.style.position = 'absolute';
+                div.style.left = this.domWidth + 'px';
+                div.style.top = (this.domHeight - 20) * +Math.random().toFixed(2) + 'px';
+                div.style.whiteSpace = 'nowrap';
+                div.style.color = '#' + Math.floor(Math.random() * 0xffffff).toString(16);
+                div.innerText = text;
+                this.dom.appendChild(div);
+
+                let roll = (timer) => {
+                    let now = +new Date();
+                    roll.last = roll.last || now;
+                    roll.timer = roll.timer || timer;
+                    let left = div.offsetLeft;
+                    let rect = div.getBoundingClientRect();
+                    if (left < (rect.left - rect.right)) {
+                        this.dom.removeChild(div);
+                    } else {
+                        if (now - roll.last >= roll.timer) {
+                            roll.last = now;
+                            left -= 3;
+                            div.style.left = left + 'px';
+                        }
+                        requestAnimationFrame(roll);
+                    }
+                }
+                roll(50 * +Math.random().toFixed(2));
+            }
+
+        }
+
+        let barage = new Barrage('content');
+
+        function appendList(text) {
+            let p = document.createElement('p');
+            p.innerText = text;
+            document.querySelector('#content-text').appendChild(p);
+        }
+
+        document.querySelector('#send').onclick = () => {
+            let text = document.querySelector('#text').value;
+            barage.shoot(text);
+
+            appendList(text);
+        };
+
+        const textList = ['弹幕', '666', '233333333', 'javascript', 'html', 'css', '前端框架', 'Vue', 'React', 'Angular',
+            '测试弹幕效果'
+        ];
+        textList.forEach((s) => {
+            barage.shoot(s);
+            appendList(s);
+        })
+    })()
+</script>
 </body>
 </html>
