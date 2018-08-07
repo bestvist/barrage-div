@@ -2,6 +2,9 @@
 
 
 基于直播平台的流行，利用原生实现一下弹幕效果。
+
+[效果](https://bestvist.github.io/barrage-div/src/example.html)
+
 ![弹幕](http://ox2ualtw3.bkt.clouddn.com/barrage.png)
 <!--more-->
 
