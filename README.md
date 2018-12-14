@@ -5,7 +5,7 @@
 
 [效果](https://bestvist.github.io/barrage-div/src/example.html)
 
-![弹幕](http://ox2ualtw3.bkt.clouddn.com/barrage.png)
+![弹幕](http://blog-images.bestvist.com/barrage.png)
 <!--more-->
 
 ### 实现原理
@@ -35,4 +35,4 @@
 
 ### 效果
 
-![](http://ox2ualtw3.bkt.clouddn.com/barrage.gif)
+![](http://blog-images.bestvist.com/barrage.gif)
